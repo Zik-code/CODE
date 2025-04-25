@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+using namespace std;
 
 // 最长公共子序列函数
 void LCS(char* x, char* y, int m, int n, int** c, int** b) {
@@ -35,7 +36,7 @@ void printLCS(int** b, char* x, int i, int j) {
     }
     if (b[i][j] == 1) {
         printLCS(b, x, i - 1, j - 1);
-        std::cout << x[i - 1];
+        cout << x[i - 1];
     } else if (b[i][j] == 2) {
         printLCS(b, x, i - 1, j);
     } else {
@@ -43,9 +44,55 @@ void printLCS(int** b, char* x, int i, int j) {
     }
 }
 
+// 打印 C 数组表格
+void printCTable(int** c, int m, int n) {
+    cout << "C 数组求解表格：" << endl;
+    for (int i = 0; i <= m; i++) {
+        for (int j = 0; j <= n; j++) {
+            cout << c[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// 打印 b 数组表格
+void printBTable(int** b, char* x, char* y, int m, int n) {
+    cout << "b 数组求解表格：" << endl;
+    // 打印列首字母
+    cout << " ";
+    for (int j = 0; j < n; j++) {
+        cout << " " << y[j] << " ";
+    }
+    cout << endl;
+
+    for (int i = 0; i <= m; i++) {
+        if (i > 0) {
+            cout << x[i - 1];
+        } else {
+            cout << " ";
+        }
+        for (int j = 0; j <= n; j++) {
+            if (b[i][j] == 1) {
+                cout << " 1 ";
+            } else if (b[i][j] == 2) {
+                cout << " 2 ";
+            } else if (b[i][j] == 3) {
+                cout << " 3 ";
+            } else {
+                cout << "   ";
+            }
+        }
+        cout << endl;
+    }
+}
+
 int main() {
-    char x[] = "AGGTAB";
-    char y[] = "GXTXAYB";
+    char x[100];
+    char y[100];
+    cout << "请输入X：";
+    cin >> x;
+    cout << "请输入Y：";
+    cin >> y;
     int m = strlen(x);
     int n = strlen(y);
 
@@ -60,10 +107,20 @@ int main() {
     // 调用 LCS 函数
     LCS(x, y, m, n, c, b);
 
+    // 输出最长公共子序列长度
+    cout << endl;
+    cout << "最长公共子序列长度是: " << c[m][n] << endl;
+	cout << endl;
+    // 打印 C 数组表格
+    printCTable(c, m, n);
+
+    // 打印 b 数组表格
+    printBTable(b, x, y, m, n);
+
     // 输出最长公共子序列
-    std::cout << "最长公共子序列是: ";
+    cout << "最长公共子序列是: ";
     printLCS(b, x, m, n);
-    std::cout << std::endl;
+    cout << endl;
 
     // 释放动态分配的内存
     for (int i = 0; i <= m; i++) {
